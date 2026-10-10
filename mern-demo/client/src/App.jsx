@@ -242,7 +242,7 @@ function App() {
         {/* TIÊU ĐỀ */}
         {/* ========================= */}
 
-        <h1>Quản lý sinh viên</h1>
+        <h1>Quản lý sinh viên – Phiên bản 2.0</h1>
 
         <p className="subtitle">
           Hệ thống quản lý sinh viên MERN
