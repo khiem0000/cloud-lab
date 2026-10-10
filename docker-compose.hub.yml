@@ -1,0 +1,38 @@
+
+name: cloud-lab-hub
+
+services:
+
+  # Câu 51: Backend từ Docker Hub
+  backend:
+    image: khiewcokk/mern-backend:1.0
+
+    # Câu 53: Cấu hình Port Backend
+    ports:
+      - "5001:5000"
+
+    # Câu 55: Biến môi trường MongoDB Atlas
+    env_file:
+      - ./mern-demo/server/.env
+
+    environment:
+      PORT: "5000"
+
+    restart: unless-stopped
+
+  # Câu 52: Frontend từ Docker Hub
+  frontend:
+    image: khiewcokk/mern-frontend:1.0
+
+    # Câu 54: Cấu hình Port Frontend
+    ports:
+      - "8080:4173"
+
+    # Frontend kết nối Backend qua Docker Network
+    environment:
+      API_PROXY_TARGET: "http://backend:5000"
+
+    depends_on:
+      - backend
+
+    restart: unless-stopped

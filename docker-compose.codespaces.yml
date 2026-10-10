@@ -1,0 +1,29 @@
+
+name: cloud-lab-codespaces
+
+services:
+  backend:
+    image: khiewcokk/mern-backend:1.0
+
+    ports:
+      - "5001:5000"
+
+    environment:
+      PORT: "5000"
+      MONGODB_URI: ${MONGODB_URI:?MONGODB_URI secret is required}
+
+    restart: unless-stopped
+
+  frontend:
+    image: khiewcokk/mern-frontend:1.0
+
+    ports:
+      - "8080:4173"
+
+    environment:
+      API_PROXY_TARGET: "http://backend:5000"
+
+    depends_on:
+      - backend
+
+    restart: unless-stopped
