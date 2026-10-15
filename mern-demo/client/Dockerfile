@@ -1,24 +1,21 @@
+# Stage 1: Build React
+FROM node:22-alpine AS build
 
-# Câu 51: Sử dụng Node.js làm Base Image
-FROM node:22-alpine
-
-# Câu 52: Thiết lập thư mục làm việc
 WORKDIR /app
 
-# Câu 53: Sao chép các file package
 COPY package*.json ./
+RUN npm ci
 
-# Câu 54: Cài đặt thư viện React
-RUN npm install
-
-# Câu 55: Sao chép source code React
 COPY . .
-
-# Câu 56: Build React thành bản production
 RUN npm run build
 
-# Cổng dùng để xem bản build bằng Vite Preview
-EXPOSE 4173
+# Stage 2: Serve bằng Nginx
+FROM nginx:alpine
 
-# Khởi động bản build React
-CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "4173"]
+COPY --from=build /app/dist /usr/share/nginx/html
+
+COPY nginx.conf /etc/nginx/templates/default.conf.template
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

@@ -56,9 +56,19 @@ const Student = mongoose.model("Student", studentSchema);
 // ==========================
 
 app.get("/api/hello", (req, res) => {
-    res.json({
-        message: "Backend is running"
-    });
+  res.json({
+    message: "Backend is running",
+    version: "1.2.0"
+  });
+});
+
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "UP",
+    version: "1.2.0",
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
 });
 
 
